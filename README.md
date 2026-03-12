@@ -2,11 +2,11 @@
 
 Earned. Available. Paid.
 
-This repository hosts the temporary landing page for piadnow while the platform is under development.
+This repository hosts the temporary landing page for PaidNow while the platform is under development.
 
 ## About
 
-paidnow is building real-time earned wage access infrastructure enabling employees to access earned income instantly without loans or interest.
+PaidNow is building real-time earned wage access infrastructure enabling employees to access earned income instantly without loans or interest.
 
 ## Website
 
