@@ -33,7 +33,7 @@ body{
     align-items:center;
 }
 
-.nav-logo-img{height:36px;width:auto;display:block;}
+.nav-logo-img{height:44px;width:auto;display:block;}
 
 .nav-menu{display:flex;list-style:none;gap:28px;align-items:center;}
 
@@ -303,7 +303,7 @@ footer p{font-size:13px;opacity:.5;}
 @media(max-width:600px){
     .nav-menu .nav-item:not(:last-child){display:none;}
     .nav-cta{padding:8px 14px;font-size:13px;}
-    .nav-logo-img{height:30px;}
+    .nav-logo-img{height:36px;}
 
     .logo{margin-bottom:32px;}
 
