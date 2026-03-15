@@ -283,6 +283,44 @@
 
 </div>
 
+<div class="cta-overlay" id="contact">
+<div class="cta-modal">
+<button class="cta-close" onclick="document.getElementById('contact').classList.remove('active')">&times;</button>
+<h2 class="cta-heading">Stay Informed</h2>
+<p class="cta-text">Be among the first to know when we launch.</p>
+<form class="early-access-form" id="waitlist-form">
+<input type="email" placeholder="Enter your email" class="email-input" required id="waitlist-email">
+<button type="submit" class="submit-btn" id="waitlist-btn">Notify Me</button>
+</form>
+<p class="form-msg" id="form-msg"></p>
+<script>
+document.getElementById('waitlist-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('waitlist-btn');
+  const msg = document.getElementById('form-msg');
+  const email = document.getElementById('waitlist-email').value;
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  try {
+    const res = await fetch('https://x1qmkbi32b.execute-api.af-south-1.amazonaws.com/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    msg.style.color = res.ok ? '#0E2A40' : '#c0392b';
+    msg.textContent = res.ok ? "You're on the list. We'll be in touch." : 'Something went wrong. Try again.';
+    if (res.ok) this.reset();
+  } catch {
+    msg.style.color = '#c0392b';
+    msg.textContent = 'Something went wrong. Try again.';
+  }
+  btn.disabled = false;
+  btn.textContent = 'Notify Me';
+});
+</script>
+</div>
+</div>
+
 <footer>
 <a href="https://www.instagram.com/paidnow.live" target="_blank" rel="noopener" class="social-link" aria-label="Follow PaidNow on Instagram">
 <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -320,7 +358,7 @@
 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/></svg>
 <span>How It Works</span>
 </a>
-<a href="#contact" class="bottom-nav-item" onclick="document.getElementById('contact').classList.add('active'); return false;">
+<a href="#" class="bottom-nav-item" onclick="document.getElementById('contact').classList.add('active'); return false;">
 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
 <span>Stay Informed</span>
 </a>
