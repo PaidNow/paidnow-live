@@ -1,4 +1,4 @@
-Contact: mailto:security@paidnow.live
+Contact: mailto:info@paidnow.live
 Expires: 2027-03-19T00:00:00.000Z
 Preferred-Languages: en
 Canonical: https://paidnow.live/.well-known/security.txt
