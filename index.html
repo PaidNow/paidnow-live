@@ -35,7 +35,8 @@
 <title>PaidNow</title>
 
 <link rel="stylesheet" href="styles.css">
-<link href="https://api.fontshare.com/v2/css?f[]=garet@400,700&display=swap" rel="stylesheet">
+<link href="https://api.fontshare.com/v2/css?f[]=garet@400,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://api.fontshare.com/v2/css?f[]=garet@400,700&display=swap" rel="stylesheet"></noscript>
 
 <link rel="icon" type="image/png" href="PaidNowFavicon.png">
 <link rel="apple-touch-icon" href="PaidNowFavicon.png">
@@ -144,8 +145,12 @@
 <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
 <li class="nav-item"><a href="our-story.html" class="nav-link">Our Story</a></li>
 <li class="nav-item"><a href="how-it-works.html" class="nav-link">How It Works</a></li>
+<li class="nav-item"><a href="employers.html" class="nav-link">For Employers</a></li>
 <li class="nav-item"><a href="#contact" class="nav-link nav-cta" onclick="document.getElementById('contact').classList.add('active'); return false;">Stay Informed</a></li>
 </ul>
+<button class="hamburger" onclick="this.classList.toggle('open');document.querySelector('.nav-menu').classList.toggle('nav-open')" aria-label="Menu">
+<span></span><span></span><span></span>
+</button>
 </div>
 </nav>
 
@@ -270,6 +275,93 @@ Launching Soon
 <p>Email: info@paidnow.live | Website: https://paidnow.live | Instagram: @paidnow.live | X: @paidnow_live</p>
 </div>
 
+<section class="mockup-section">
+<h2 class="mockup-heading">A glimpse of the app</h2>
+<p class="mockup-subheading">Coming soon to iOS and Android</p>
+<div class="mockup-row">
+
+<!-- SCREEN 1: Dashboard -->
+<div class="phone-frame">
+  <div class="phone-screen">
+    <div class="phone-notch"><div class="phone-island"></div></div>
+    <div class="app-status-bar">
+      <span class="app-time">9:41</span>
+      <div class="app-status-icons">
+        <svg width="15" height="11" viewBox="0 0 15 11" fill="white"><rect x="0" y="3" width="2.5" height="8" rx="1" opacity=".35"/><rect x="4" y="2" width="2.5" height="9" rx="1" opacity=".6"/><rect x="8" y="0" width="2.5" height="11" rx="1"/><rect x="12" y="1" width="2" height="9" rx="1" stroke="white" stroke-width="1" fill="none"/></svg>
+        <svg width="24" height="11" viewBox="0 0 24 11" fill="none"><rect x=".5" y=".5" width="20" height="10" rx="3" stroke="white" stroke-opacity=".35"/><rect x="2" y="2" width="15" height="7" rx="1.5" fill="white"/><path d="M22 3.5v4a2 2 0 0 0 0-4z" fill="white" fill-opacity=".4"/></svg>
+      </div>
+    </div>
+    <div class="app-header-bar">
+      <div>
+        <p class="app-greeting">Good morning 👋</p>
+        <p class="app-username">Sipho Dlamini</p>
+      </div>
+      <div class="app-avatar">SD</div>
+    </div>
+    <div class="app-body">
+      <div class="app-hero-card">
+        <p class="app-hero-label">Available to withdraw</p>
+        <p class="app-hero-amount">R 1,260.00</p>
+        <div class="app-hero-meta">
+          <span class="app-hero-badge">&#9679; Live</span>
+          <span>Payday in 4 days</span>
+        </div>
+        <div class="app-progress-wrap">
+          <div class="app-progress-bar"><div class="app-progress-fill" style="width:63%"></div></div>
+          <div class="app-progress-labels"><span>R 0</span><span>R 2,000</span></div>
+        </div>
+      </div>
+      <div class="app-stats-row">
+        <div class="app-stat-box"><p class="app-stat-label">Today</p><p class="app-stat-val">R 420</p><p class="app-stat-sub">6 hrs</p></div>
+        <div class="app-stat-box"><p class="app-stat-label">This week</p><p class="app-stat-val">R 1,260</p><p class="app-stat-sub">3 days</p></div>
+        <div class="app-stat-box"><p class="app-stat-label">Withdrawn</p><p class="app-stat-val">R 0</p><p class="app-stat-sub">this cycle</p></div>
+      </div>
+      <div class="app-action-btn">Withdraw Now</div>
+    </div>
+    <div class="app-tab-bar">
+      <div class="app-tab app-tab-active"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Home</span></div>
+      <div class="app-tab"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2M12 12v4M10 14h4"/></svg><span>Wallet</span></div>
+      <div class="app-tab"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg><span>History</span></div>
+      <div class="app-tab"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Profile</span></div>
+    </div>
+    <div class="phone-home-bar"></div>
+  </div>
+</div>
+
+<!-- SCREEN 2: Confirmed -->
+<div class="phone-frame">
+  <div class="phone-screen">
+    <div class="phone-notch"><div class="phone-island"></div></div>
+    <div class="app-status-bar">
+      <span class="app-time">9:44</span>
+      <div class="app-status-icons">
+        <svg width="15" height="11" viewBox="0 0 15 11" fill="white"><rect x="0" y="3" width="2.5" height="8" rx="1" opacity=".35"/><rect x="4" y="2" width="2.5" height="9" rx="1" opacity=".6"/><rect x="8" y="0" width="2.5" height="11" rx="1"/><rect x="12" y="1" width="2" height="9" rx="1" stroke="white" stroke-width="1" fill="none"/></svg>
+        <svg width="24" height="11" viewBox="0 0 24 11" fill="none"><rect x=".5" y=".5" width="20" height="10" rx="3" stroke="white" stroke-opacity=".35"/><rect x="2" y="2" width="17" height="7" rx="1.5" fill="white"/><path d="M22 3.5v4a2 2 0 0 0 0-4z" fill="white" fill-opacity=".4"/></svg>
+      </div>
+    </div>
+    <div class="app-body app-body-center">
+      <div class="app-success-ring"><div class="app-success-icon">&#10003;</div></div>
+      <p class="app-success-title">Money Sent</p>
+      <p class="app-success-amount">R 800.00</p>
+      <p class="app-success-sub">In your account now</p>
+      <div class="app-receipt">
+        <p class="app-breakdown-title">Receipt</p>
+        <div class="app-info-row"><span>Ref</span><span class="app-info-val">#PN-20481</span></div>
+        <div class="app-info-row"><span>Amount</span><span class="app-info-val">R 800.00</span></div>
+        <div class="app-info-row"><span>Fee</span><span class="app-info-val">R 0.00</span></div>
+        <div class="app-info-row"><span>Via</span><span class="app-info-val">Instant EFT</span></div>
+        <div class="app-info-row app-info-row-last"><span>Status</span><span class="app-info-val app-status">&#9679; Completed</span></div>
+      </div>
+      <div class="app-remaining">Balance left: <strong>R 460.00</strong></div>
+      <div class="app-action-btn">Back to Dashboard</div>
+    </div>
+    <div class="phone-home-bar"></div>
+  </div>
+</div>
+
+</div>
+</section>
+
 </div>
 
 <footer>
@@ -293,8 +385,9 @@ Launching Soon
 <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
 </svg>
 </a>
-<p>PaidNow | Copyright © 2026 PaidNow</p>
+<p>PaidNow | Copyright © 2026 PaidNow | <a href="privacy.html" style="color:inherit;text-decoration:underline;">Privacy Policy</a></p>
 </footer>
+
 
 <nav class="bottom-nav">
 <a href="index.html" class="bottom-nav-item bottom-nav-active">
