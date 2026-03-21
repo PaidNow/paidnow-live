@@ -50,7 +50,7 @@ body{
     background:#0E2A40;
     color:#fff !important;
     padding:9px 18px;
-    border-radius:5px;
+    border-radius:999px;
     font-size:14px;
 }
 .nav-cta:hover{opacity:.85;}
@@ -139,7 +139,7 @@ h1{
     flex:1;min-width:0;
     padding:11px 14px;
     border:1px solid rgba(14,42,64,.2);
-    border-radius:5px;
+    border-radius:999px;
     font-size:15px;
     font-family:inherit;
 }
@@ -148,7 +148,7 @@ h1{
 .submit-btn{
     padding:11px 24px;
     background:#0E2A40;color:#fff;
-    border:none;border-radius:5px;
+    border:none;border-radius:999px;
     font-size:15px;font-weight:500;
     cursor:pointer;font-family:inherit;
     transition:opacity .2s;

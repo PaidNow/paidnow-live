@@ -7,6 +7,13 @@
 <meta name="description" content="How PaidNow works. Access wages you've already earned before payday through secure payroll integration. No loans, no interest, no waiting. Built for South Africa.">
 <meta name="keywords" content="how earned wage access works, PaidNow how it works, on-demand pay South Africa, early wage access, payroll integration South Africa">
 <meta name="robots" content="index, follow">
+
+<!-- Security -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://api.fontshare.com; font-src https://api.fontshare.com https://cdn.fontshare.com; img-src 'self' data:; connect-src 'self' https://x1qmkbi32b.execute-api.af-south-1.amazonaws.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://x1qmkbi32b.execute-api.af-south-1.amazonaws.com;">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta http-equiv="X-Frame-Options" content="DENY">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+
 <link rel="canonical" href="https://paidnow.live/how-it-works.html">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://paidnow.live/how-it-works.html">
@@ -288,35 +295,44 @@
 <button class="cta-close" onclick="document.getElementById('contact').classList.remove('active')">&times;</button>
 <h2 class="cta-heading">Stay Informed</h2>
 <p class="cta-text">Be among the first to know when we launch.</p>
-<form class="early-access-form" id="waitlist-form">
-<input type="email" placeholder="Enter your email" class="email-input" required id="waitlist-email">
+<form class="early-access-form" id="waitlist-form" autocomplete="off">
+<input type="email" placeholder="Enter your email" class="email-input" required id="waitlist-email" maxlength="254">
+<input type="text" name="website" id="waitlist-hp" style="position:absolute;left:-9999px;opacity:0;height:0;width:0;" tabindex="-1" autocomplete="off">
 <button type="submit" class="submit-btn" id="waitlist-btn">Notify Me</button>
 </form>
 <p class="form-msg" id="form-msg"></p>
 <script>
-document.getElementById('waitlist-form').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const btn = document.getElementById('waitlist-btn');
-  const msg = document.getElementById('form-msg');
-  const email = document.getElementById('waitlist-email').value;
-  btn.disabled = true;
-  btn.textContent = 'Sending...';
-  try {
-    const res = await fetch('https://x1qmkbi32b.execute-api.af-south-1.amazonaws.com/subscribe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email })
-    });
-    msg.style.color = res.ok ? '#0E2A40' : '#c0392b';
-    msg.textContent = res.ok ? "You're on the list. We'll be in touch." : 'Something went wrong. Try again.';
-    if (res.ok) this.reset();
-  } catch {
-    msg.style.color = '#c0392b';
-    msg.textContent = 'Something went wrong. Try again.';
-  }
-  btn.disabled = false;
-  btn.textContent = 'Notify Me';
-});
+(function(){
+  var lastSubmit=0;
+  document.getElementById('waitlist-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    if(document.getElementById('waitlist-hp').value) return;
+    var now=Date.now();
+    if(now-lastSubmit<10000){document.getElementById('form-msg').textContent='Please wait a moment before trying again.';document.getElementById('form-msg').style.color='#c0392b';return;}
+    lastSubmit=now;
+    var btn=document.getElementById('waitlist-btn');
+    var msg=document.getElementById('form-msg');
+    var email=document.getElementById('waitlist-email').value.trim();
+    if(email.length>254||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){msg.style.color='#c0392b';msg.textContent='Please enter a valid email.';return;}
+    btn.disabled=true;
+    btn.textContent='Sending...';
+    try{
+      var res=await fetch('https://x1qmkbi32b.execute-api.af-south-1.amazonaws.com/subscribe',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({email:email})
+      });
+      msg.style.color=res.ok?'#0E2A40':'#c0392b';
+      msg.textContent=res.ok?"You're on the list. We'll be in touch.":'Something went wrong. Try again.';
+      if(res.ok)this.reset();
+    }catch(err){
+      msg.style.color='#c0392b';
+      msg.textContent='Something went wrong. Try again.';
+    }
+    btn.disabled=false;
+    btn.textContent='Notify Me';
+  });
+})();
 </script>
 </div>
 </div>
