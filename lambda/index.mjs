@@ -14,11 +14,13 @@ const headers = {
 };
 
 export const handler = async (event) => {
-  if (event.httpMethod === "OPTIONS") {
+  const method = event.requestContext?.http?.method || event.httpMethod;
+
+  if (method === "OPTIONS") {
     return { statusCode: 204, headers, body: "" };
   }
 
-  if (event.httpMethod !== "POST") {
+  if (method !== "POST") {
     return { statusCode: 405, headers, body: JSON.stringify({ message: "Method not allowed" }) };
   }
 
