@@ -136,7 +136,7 @@
         body:JSON.stringify({email:email})
       });
       msg.style.color=res.ok?'#0E2A40':'#c0392b';
-      msg.textContent=res.ok?"You're on the list. We'll be in touch.":'Something went wrong. Try again.';
+      msg.textContent=res.ok?"You're on the list. We'll notify you when we launch.":'Something went wrong. Try again.';
       if(res.ok)this.reset();
     }catch(err){
       msg.style.color='#c0392b';
