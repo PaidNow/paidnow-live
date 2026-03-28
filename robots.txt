@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
+Disallow: /lambda/
+Disallow: /.well-known/
 
 Sitemap: https://paidnow.live/sitemap.xml
+
+# PaidNow — Earned Wage Access for South Africa
+# https://paidnow.live
