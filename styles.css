@@ -809,3 +809,48 @@ footer p{font-size:13px;opacity:.5;}
     .login-inner{padding:20px 16px 24px;}
     .login-title{font-size:19px;}
 }
+
+
+/* ── FAQ ACCORDION ── */
+.faq-list{display:flex;flex-direction:column;gap:0;}
+
+.faq-item{
+    border-bottom:1px solid rgba(14,42,64,.08);
+}
+.faq-item:last-child{border-bottom:none;}
+
+.faq-question{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 0;
+    font-size:clamp(15px,3vw,17px);
+    font-weight:600;
+    color:#0E2A40;
+    cursor:pointer;
+    list-style:none;
+    line-height:1.4;
+}
+.faq-question::-webkit-details-marker{display:none;}
+.faq-question::after{
+    content:'+';
+    font-size:22px;
+    font-weight:400;
+    opacity:.35;
+    flex-shrink:0;
+    margin-left:16px;
+    transition:transform .2s;
+}
+details[open] .faq-question::after{
+    content:'−';
+}
+
+.faq-answer{
+    font-size:clamp(14px,2.8vw,16px);
+    line-height:1.75;
+    opacity:.75;
+    padding:0 0 20px;
+}
+.faq-answer p{margin:0 0 10px;}
+.faq-answer p:last-child{margin-bottom:0;}
+.faq-answer .benefits-list{margin-top:10px;}
