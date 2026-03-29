@@ -228,7 +228,7 @@
 <li class="nav-item"><a href="our-story.html" class="nav-link">Our Story</a></li>
 <li class="nav-item"><a href="how-it-works.html" class="nav-link">How It Works</a></li>
 <li class="nav-item"><a href="employers.html" class="nav-link">For Employers</a></li>
-<li class="nav-item"><a href="#waitlist" class="nav-link nav-cta" onclick="document.getElementById('hero-waitlist-email').scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){document.getElementById('hero-waitlist-email').focus();},400);return false;">Get Early Access</a></li>
+<li class="nav-item"><a href="#waitlist" class="nav-link nav-cta" onclick="document.getElementById('hero-waitlist-email').scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){document.getElementById('hero-waitlist-email').focus();},350);return false;">Get Early Access</a></li>
 <li class="nav-item"><a href="#" class="nav-link" onclick="document.getElementById('login-panel').classList.toggle('login-open'); return false;">Log In</a></li>
 </ul>
 <button class="hamburger" onclick="this.classList.toggle('open');document.querySelector('.nav-menu').classList.toggle('nav-open')" aria-label="Menu">
@@ -347,22 +347,38 @@
 <span class="word word-1">Earned.</span> <span class="word word-2">Available.</span> <span class="word word-3">Paid.</span>
 </h1>
 
-<p class="hero-subheading">Access the wages you've already earned, before payday.</p>
+<p class="hero-subheading">Instant access to earned wages - no loans, no interest.</p>
 
 <p class="status-badge">Launching Soon</p>
 
-<form class="hero-waitlist" id="hero-waitlist-form" autocomplete="off">
-  <input type="email" placeholder="Enter your email" class="hero-waitlist-email" required id="hero-waitlist-email" maxlength="254" aria-label="Email address">
-  <button type="submit" class="hero-waitlist-btn" id="hero-waitlist-btn">Get Early Access</button>
-</form>
-<p class="hero-waitlist-msg" id="hero-waitlist-msg"></p>
+<div class="audience-split">
+
+  <div class="audience-card audience-employee">
+    <span class="audience-tag">I'm an employee</span>
+    <p class="audience-desc">Get notified the moment the app goes live.</p>
+    <form class="audience-form" id="hero-waitlist-form" autocomplete="off">
+      <input type="email" placeholder="Your email" class="audience-email" required id="hero-waitlist-email" maxlength="254" aria-label="Email address">
+      <button type="submit" class="audience-submit" id="hero-waitlist-btn">Notify Me</button>
+    </form>
+    <p class="audience-msg" id="hero-waitlist-msg"></p>
+  </div>
+
+  <div class="audience-rule"></div>
+
+  <div class="audience-card audience-employer">
+    <span class="audience-tag">I'm an employer</span>
+    <p class="audience-desc">Give your team access to their earned wages.</p>
+    <a href="employers.html" class="audience-employer-btn">Learn More &rarr;</a>
+  </div>
+
+</div>
 
 <script>
 (function(){
   var lastSubmit=0;
   document.getElementById('hero-waitlist-form').addEventListener('submit',async function(e){
     e.preventDefault();
-    if(Date.now()-lastSubmit<10000){document.getElementById('hero-waitlist-msg').textContent='Please wait a moment before trying again.';document.getElementById('hero-waitlist-msg').style.color='#c0392b';return;}
+    if(Date.now()-lastSubmit<10000){document.getElementById('hero-waitlist-msg').textContent='Please wait a moment.';document.getElementById('hero-waitlist-msg').style.color='#c0392b';return;}
     lastSubmit=Date.now();
     var btn=document.getElementById('hero-waitlist-btn');
     var msg=document.getElementById('hero-waitlist-msg');
@@ -372,10 +388,10 @@
     try{
       var res=await fetch('https://x1qmkbi32b.execute-api.af-south-1.amazonaws.com/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email})});
       msg.style.color=res.ok?'#0E2A40':'#c0392b';
-      msg.textContent=res.ok?"You're on the list - we'll notify you when we launch.":'Something went wrong. Try again.';
+      msg.textContent=res.ok?"You're on the list - we'll be in touch.":'Something went wrong. Try again.';
       if(res.ok)this.reset();
     }catch(err){msg.style.color='#c0392b';msg.textContent='Something went wrong. Try again.';}
-    btn.disabled=false;btn.textContent='Get Early Access';
+    btn.disabled=false;btn.textContent='Notify Me';
   });
 })();
 </script>
