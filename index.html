@@ -241,7 +241,7 @@
 <div class="login-panel" id="login-panel">
 <div class="login-overlay" onclick="document.getElementById('login-panel').classList.remove('login-open')"></div>
 <div class="login-inner">
-<button class="login-close" onclick="document.getElementById('login-panel').classList.remove('login-open')">&times;</button>
+<button class="login-close" onclick="document.getElementById('login-panel').classList.remove('login-open')" aria-label="Close">&times;</button>
 <div class="login-brand">
 <img src="paidnowlogo.png" alt="PaidNow" class="login-logo">
 <p class="login-tagline">Employer &amp; Admin Portal</p>
@@ -263,7 +263,7 @@
 </div>
 <div id="login-step-otp" style="display:none">
 <div class="login-otp-icon">
-<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0E2A40" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M2 7l10 7 10-7"/></svg>
+<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#0E2A40" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18" stroke-width="2.5"/></svg>
 </div>
 <h2 class="login-title">Check your phone</h2>
 <p class="login-sub">We sent a 6-digit code to <strong id="login-phone-display"></strong></p>
@@ -341,7 +341,7 @@
 
 <div class="container">
 
-<img src="paidnowlogo.png" class="logo" alt="PaidNow Logo - Earned Wage Access Platform">
+<img src="paidnowlogo.png" class="logo" alt="PaidNow Logo - Earned Wage Access Platform" fetchpriority="high" loading="eager">
 
 <h1>
 <span class="word word-1">Earned.</span> <span class="word word-2">Available.</span> <span class="word word-3">Paid.</span>
@@ -349,9 +349,36 @@
 
 <p class="hero-subheading">Access the wages you've already earned, before payday.</p>
 
-<p class="status">
-Launching Soon
-</p>
+<p class="status-badge">Launching Soon</p>
+
+<form class="hero-waitlist" id="hero-waitlist-form" autocomplete="off">
+  <input type="email" placeholder="Enter your email" class="hero-waitlist-email" required id="hero-waitlist-email" maxlength="254" aria-label="Email address">
+  <button type="submit" class="hero-waitlist-btn" id="hero-waitlist-btn">Get Early Access</button>
+</form>
+<p class="hero-waitlist-msg" id="hero-waitlist-msg"></p>
+
+<script>
+(function(){
+  var lastSubmit=0;
+  document.getElementById('hero-waitlist-form').addEventListener('submit',async function(e){
+    e.preventDefault();
+    if(Date.now()-lastSubmit<10000){document.getElementById('hero-waitlist-msg').textContent='Please wait a moment before trying again.';document.getElementById('hero-waitlist-msg').style.color='#c0392b';return;}
+    lastSubmit=Date.now();
+    var btn=document.getElementById('hero-waitlist-btn');
+    var msg=document.getElementById('hero-waitlist-msg');
+    var email=document.getElementById('hero-waitlist-email').value.trim();
+    if(email.length>254||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){msg.style.color='#c0392b';msg.textContent='Please enter a valid email.';return;}
+    btn.disabled=true;btn.textContent='Sending\u2026';
+    try{
+      var res=await fetch('https://x1qmkbi32b.execute-api.af-south-1.amazonaws.com/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email})});
+      msg.style.color=res.ok?'#0E2A40':'#c0392b';
+      msg.textContent=res.ok?"You're on the list - we'll notify you when we launch.":'Something went wrong. Try again.';
+      if(res.ok)this.reset();
+    }catch(err){msg.style.color='#c0392b';msg.textContent='Something went wrong. Try again.';}
+    btn.disabled=false;btn.textContent='Get Early Access';
+  });
+})();
+</script>
 
 <div class="cta-overlay" id="contact">
 <div class="cta-modal">
@@ -592,6 +619,13 @@ Launching Soon
 </section>
 
 <footer>
+<nav class="footer-nav">
+  <a href="how-it-works.html" class="footer-link">How It Works</a>
+  <a href="employers.html" class="footer-link">For Employers</a>
+  <a href="our-story.html" class="footer-link">Our Story</a>
+  <a href="privacy.html" class="footer-link">Privacy Policy</a>
+  <a href="mailto:info@paidnow.live" class="footer-link">Contact</a>
+</nav>
 <a href="https://www.instagram.com/paidnow.live" target="_blank" rel="noopener" class="social-link" aria-label="Follow PaidNow on Instagram">
 <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
 <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
@@ -622,16 +656,16 @@ Launching Soon
 <span>Home</span>
 </a>
 <a href="our-story.html" class="bottom-nav-item">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
 <span>Our Story</span>
 </a>
 <a href="how-it-works.html" class="bottom-nav-item">
 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/></svg>
 <span>How It Works</span>
 </a>
-<a href="#" class="bottom-nav-item" onclick="document.getElementById('contact').classList.add('active'); return false;">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-<span>Stay Informed</span>
+<a href="employers.html" class="bottom-nav-item">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zm-2-8h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg>
+<span>For Employers</span>
 </a>
 </nav>
 
