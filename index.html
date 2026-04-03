@@ -256,7 +256,7 @@
 <input type="email" id="login-email" class="login-input" placeholder="you@company.co.za" required autocomplete="email">
 </div>
 <p class="login-error" id="login-error"></p>
-<button type="submit" class="login-btn" id="login-btn">Send Code &rarr;</button>
+<button type="submit" class="login-btn" id="login-btn">Log In &rarr;</button>
 </div>
 <div id="login-step-otp" style="display:none">
 <div class="login-otp-icon">
@@ -305,14 +305,14 @@
           window.location.href='https://dashboard.paidnow.live#token='+encodeURIComponent(data.accessToken)+'&refresh='+encodeURIComponent(data.refreshToken||'');
           return;
         }
-        if(data.error){err.textContent=data.error.message;btn.disabled=false;btn.textContent='Send Code \u2192';return;}
+        if(data.error){err.textContent=data.error.message;btn.disabled=false;btn.textContent='Log In \u2192';return;}
         session=data.session||null;
         document.getElementById('login-step-phone').style.display='none';
         otpStep.style.display='';
         document.getElementById('login-phone-display').textContent=phone.replace(/(\+\d{2})(\d{2})(\d+)(\d{2})/,'$1 $2 *** $4');
         document.getElementById('login-otp').focus();
       }catch(ex){err.textContent='Something went wrong. Try again.';}
-      btn.disabled=false;btn.textContent='Send Code \u2192';
+      btn.disabled=false;btn.textContent='Log In \u2192';
     } else {
       // Step 2: Verify OTP
       var otp=document.getElementById('login-otp').value.trim();
