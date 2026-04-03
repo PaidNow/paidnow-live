@@ -228,9 +228,9 @@
 <li class="nav-item"><a href="how-it-works.html" class="nav-link">How It Works</a></li>
 <li class="nav-item"><a href="employers.html" class="nav-link">For Employers</a></li>
 <li class="nav-item"><a href="#waitlist" class="nav-link nav-cta" onclick="document.getElementById('hero-waitlist-email').scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){document.getElementById('hero-waitlist-email').focus();},350);return false;">Get Early Access</a></li>
-<li class="nav-item"><a href="#" class="nav-link" onclick="document.getElementById('login-panel').classList.toggle('login-open'); return false;">Log In</a></li>
+<li class="nav-item"><a href="#" class="nav-link" onclick="document.getElementById('login-panel').classList.toggle('login-open'); return false;">Sign in</a></li>
 </ul>
-<a href="#" class="nav-mobile-login" onclick="document.getElementById('login-panel').classList.toggle('login-open'); return false;">Log In</a>
+<a href="#" class="nav-mobile-login" onclick="document.getElementById('login-panel').classList.toggle('login-open'); return false;">Sign in</a>
 </div>
 </nav>
 
@@ -256,7 +256,7 @@
 <input type="email" id="login-email" class="login-input" placeholder="you@company.co.za" required autocomplete="email">
 </div>
 <p class="login-error" id="login-error"></p>
-<button type="submit" class="login-btn" id="login-btn">Log In &rarr;</button>
+<button type="submit" class="login-btn" id="login-btn">Sign in &rarr;</button>
 </div>
 <div id="login-step-otp" style="display:none">
 <div class="login-otp-icon">
@@ -305,14 +305,14 @@
           window.location.href='https://dashboard.paidnow.live#token='+encodeURIComponent(data.accessToken)+'&refresh='+encodeURIComponent(data.refreshToken||'');
           return;
         }
-        if(data.error){err.textContent=data.error.message;btn.disabled=false;btn.textContent='Log In \u2192';return;}
+        if(data.error){err.textContent=data.error.message;btn.disabled=false;btn.textContent='Sign in \u2192';return;}
         session=data.session||null;
         document.getElementById('login-step-phone').style.display='none';
         otpStep.style.display='';
         document.getElementById('login-phone-display').textContent=phone.replace(/(\+\d{2})(\d{2})(\d+)(\d{2})/,'$1 $2 *** $4');
         document.getElementById('login-otp').focus();
       }catch(ex){err.textContent='Something went wrong. Try again.';}
-      btn.disabled=false;btn.textContent='Log In \u2192';
+      btn.disabled=false;btn.textContent='Sign in \u2192';
     } else {
       // Step 2: Verify OTP
       var otp=document.getElementById('login-otp').value.trim();
