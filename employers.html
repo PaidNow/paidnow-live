@@ -9,7 +9,7 @@
 <meta name="robots" content="index, follow">
 
 <!-- Security -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://api.fontshare.com; font-src https://api.fontshare.com https://cdn.fontshare.com; img-src 'self' data:; connect-src 'self' https://x1qmkbi32b.execute-api.af-south-1.amazonaws.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://x1qmkbi32b.execute-api.af-south-1.amazonaws.com;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://api.fontshare.com; font-src https://api.fontshare.com https://cdn.fontshare.com; img-src 'self' data:; connect-src 'self' https://x1qmkbi32b.execute-api.af-south-1.amazonaws.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://x1qmkbi32b.execute-api.af-south-1.amazonaws.com;">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="DENY">
 <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -30,8 +30,7 @@
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
 <link rel="stylesheet" href="styles.css">
-<link href="https://api.fontshare.com/v2/css?f[]=garet@400,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://api.fontshare.com/v2/css?f[]=garet@400,700&display=swap" rel="stylesheet"></noscript>
+<link href="https://api.fontshare.com/v2/css?f[]=garet@400,700&display=swap" rel="stylesheet">
 
 <link rel="icon" type="image/png" href="PaidNowFavicon.png">
 <link rel="apple-touch-icon" href="PaidNowFavicon.png">
@@ -54,7 +53,7 @@
 <li class="nav-item"><a href="employers.html" class="nav-link">For Employers</a></li>
 <li class="nav-item"><a href="#employer-form-section" class="nav-link nav-cta">Register Interest</a></li>
 </ul>
-<button class="hamburger" onclick="this.classList.toggle('open');document.querySelector('.nav-menu').classList.toggle('nav-open')" aria-label="Menu">
+<button class="hamburger" aria-label="Menu">
 <span></span><span></span><span></span>
 </button>
 </div>
@@ -307,47 +306,8 @@
 </div>
 </div>
 
-<script>
-(function(){
-  var lastSubmit=0;
-  var freemails=['gmail.com','yahoo.com','hotmail.com','outlook.com','icloud.com','mail.com','aol.com','protonmail.com','zoho.com','yandex.com','live.com','msn.com'];
-  document.getElementById('employer-form').addEventListener('submit', async function(e){
-    e.preventDefault();
-    if(document.getElementById('emp-hp').value) return;
-    var now=Date.now();
-    var msg=document.getElementById('emp-msg');
-    if(now-lastSubmit<15000){msg.style.color='#c0392b';msg.textContent='Please wait a moment before trying again.';return;}
-    lastSubmit=now;
-    var name=document.getElementById('emp-name').value.trim();
-    var email=document.getElementById('emp-email').value.trim().toLowerCase();
-    var phone=document.getElementById('emp-phone').value.trim().replace(/[^0-9+\- ]/g,'');
-    var company=document.getElementById('emp-company').value.trim();
-    var industry=document.getElementById('emp-industry').value;
-    var role=document.getElementById('emp-role').value;
-    var size=document.getElementById('emp-size').value;
-    var payroll=document.getElementById('emp-payroll').value;
-    var message=document.getElementById('emp-message').value.trim();
-    if(!name||!email||!company||!industry||!role||!size||!payroll){msg.style.color='#c0392b';msg.textContent='Please fill in all required fields.';return;}
-    if(email.length>254||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){msg.style.color='#c0392b';msg.textContent='Please enter a valid email address.';return;}
-    var domain=email.split('@')[1];
-    if(freemails.indexOf(domain)!==-1){msg.style.color='#c0392b';msg.textContent='Please use your work email address.';return;}
-    var btn=document.getElementById('emp-btn');
-    btn.disabled=true;btn.textContent='Submitting...';
-    try{
-      var params=new URLSearchParams(window.location.search);
-      var utm={source:params.get('utm_source')||'',medium:params.get('utm_medium')||'',campaign:params.get('utm_campaign')||''};
-      var res=await fetch('https://x1qmkbi32b.execute-api.af-south-1.amazonaws.com/employer-interest',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({name:name,email:email,phone:phone,company:company,industry:industry,role:role,size:size,payroll:payroll,message:message,utm:utm})
-      });
-      if(res.ok){msg.style.color='#0E2A40';msg.textContent="Thank you. We've saved your details and will reach out once we're live.";this.reset();}
-      else{var d=await res.json().catch(function(){return{}});msg.style.color='#c0392b';msg.textContent=d.message||'Something went wrong. Please try again.';}
-    }catch(err){msg.style.color='#c0392b';msg.textContent='Something went wrong. Please try again.';}
-    btn.disabled=false;btn.textContent='Register Interest';
-  });
-})();
-</script>
+<script src="js/nav.js" defer></script>
+<script src="js/employer-form.js" defer></script>
 
 <footer>
 <nav class="footer-nav">

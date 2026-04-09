@@ -5,9 +5,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://api.fontshare.com; font-src https://api.fontshare.com https://cdn.fontshare.com; img-src 'self' data:; frame-ancestors 'none';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://api.fontshare.com; font-src https://api.fontshare.com https://cdn.fontshare.com; img-src 'self' data:; frame-ancestors 'none'; base-uri 'self';">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="DENY">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Page Not Found | PaidNow</title>
 <link rel="stylesheet" href="styles.css">
 <link href="https://api.fontshare.com/v2/css?f[]=garet@400,700&display=swap" rel="stylesheet">
@@ -27,7 +28,7 @@
 <li class="nav-item"><a href="how-it-works.html" class="nav-link">How It Works</a></li>
 <li class="nav-item"><a href="employers.html" class="nav-link">For Employers</a></li>
 </ul>
-<button class="hamburger" onclick="this.classList.toggle('open');document.querySelector('.nav-menu').classList.toggle('nav-open')" aria-label="Menu">
+<button class="hamburger" aria-label="Menu">
 <span></span><span></span><span></span>
 </button>
 </div>
@@ -44,5 +45,6 @@
 <p>PaidNow | Copyright © 2026 PaidNow</p>
 </footer>
 
+<script src="js/nav.js" defer></script>
 </body>
 </html>

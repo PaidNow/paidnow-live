@@ -11,7 +11,7 @@
 <meta name="robots" content="index, follow">
 
 <!-- Security -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://api.fontshare.com; font-src https://api.fontshare.com https://cdn.fontshare.com; img-src 'self' data:; connect-src 'self' https://x1qmkbi32b.execute-api.af-south-1.amazonaws.com https://82pvumiwgj.execute-api.af-south-1.amazonaws.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://api.fontshare.com; font-src https://api.fontshare.com https://cdn.fontshare.com; img-src 'self' data:; connect-src 'self' https://x1qmkbi32b.execute-api.af-south-1.amazonaws.com https://82pvumiwgj.execute-api.af-south-1.amazonaws.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="DENY">
 <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -39,8 +39,7 @@
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
 <link rel="stylesheet" href="styles.css">
-<link href="https://api.fontshare.com/v2/css?f[]=garet@400,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://api.fontshare.com/v2/css?f[]=garet@400,700&display=swap" rel="stylesheet"></noscript>
+<link href="https://api.fontshare.com/v2/css?f[]=garet@400,700&display=swap" rel="stylesheet">
 
 <link rel="icon" type="image/png" href="PaidNowFavicon.png">
 <link rel="apple-touch-icon" href="PaidNowFavicon.png">
@@ -227,18 +226,18 @@
 <li class="nav-item"><a href="our-story.html" class="nav-link">Our Story</a></li>
 <li class="nav-item"><a href="how-it-works.html" class="nav-link">How It Works</a></li>
 <li class="nav-item"><a href="employers.html" class="nav-link">For Employers</a></li>
-<li class="nav-item"><a href="#waitlist" class="nav-link nav-cta" onclick="document.getElementById('hero-waitlist-email').scrollIntoView({behavior:'smooth',block:'center'});setTimeout(function(){document.getElementById('hero-waitlist-email').focus();},350);return false;">Get Early Access</a></li>
-<li class="nav-item"><a href="#" class="nav-link" onclick="document.getElementById('login-panel').classList.toggle('login-open'); return false;">Sign in</a></li>
+<li class="nav-item"><a href="#waitlist" class="nav-link nav-cta" data-action="scroll-waitlist">Get Early Access</a></li>
+<li class="nav-item"><a href="#" class="nav-link" data-login="toggle">Sign in</a></li>
 </ul>
-<a href="#" class="nav-mobile-login" onclick="document.getElementById('login-panel').classList.toggle('login-open'); return false;">Sign in</a>
+<a href="#" class="nav-mobile-login" data-login="toggle">Sign in</a>
 </div>
 </nav>
 
 <!-- Login Panel -->
 <div class="login-panel" id="login-panel">
-<div class="login-overlay" onclick="document.getElementById('login-panel').classList.remove('login-open')"></div>
+<div class="login-overlay"></div>
 <div class="login-inner">
-<button class="login-close" onclick="document.getElementById('login-panel').classList.remove('login-open')" aria-label="Close">&times;</button>
+<button class="login-close" aria-label="Close">&times;</button>
 <div class="login-brand">
 <img src="paidnowlogo.png" alt="PaidNow" class="login-logo">
 <p class="login-tagline">Employer &amp; Admin Portal</p>
@@ -267,7 +266,7 @@
 <input type="text" id="login-otp" class="login-input login-otp-input" placeholder="• • • • • •" inputmode="numeric" maxlength="6" autocomplete="one-time-code">
 <p class="login-error" id="login-otp-error"></p>
 <button type="submit" class="login-btn" id="login-otp-btn">Verify &rarr;</button>
-<button type="button" class="login-back" onclick="document.getElementById('login-step-phone').style.display='';document.getElementById('login-step-otp').style.display='none';document.getElementById('login-otp').value='';document.getElementById('login-otp-error').textContent='';">&larr; Use a different number</button>
+<button type="button" class="login-back">&larr; Use a different number</button>
 </div>
 </form>
 <div class="login-footer">
@@ -280,61 +279,6 @@
 </div>
 </div>
 
-<script>
-(function(){
-  var API='https://82pvumiwgj.execute-api.af-south-1.amazonaws.com/v1';
-  var session=null;
-  var phone='',email='';
-  var form=document.getElementById('login-form');
-  form.addEventListener('submit',async function(e){
-    e.preventDefault();
-    var otpStep=document.getElementById('login-step-otp');
-    if(otpStep.style.display==='none'){
-      // Step 1: Send OTP
-      phone=document.getElementById('login-phone').value.trim().replace(/\s/g,'');
-      email=document.getElementById('login-email').value.trim();
-      var err=document.getElementById('login-error');
-      var btn=document.getElementById('login-btn');
-      if(!phone||!email){err.textContent='Phone and email are required';return;}
-      err.textContent='';
-      btn.disabled=true;btn.textContent='Sending\u2026';
-      try{
-        var res=await fetch(API+'/auth/otp/initiate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:phone,email:email})});
-        var data=await res.json();
-        if(data.authenticated){
-          window.location.href='https://dashboard.paidnow.live#token='+encodeURIComponent(data.accessToken)+'&refresh='+encodeURIComponent(data.refreshToken||'');
-          return;
-        }
-        if(data.error){err.textContent=data.error.message;btn.disabled=false;btn.textContent='Sign in \u2192';return;}
-        session=data.session||null;
-        document.getElementById('login-step-phone').style.display='none';
-        otpStep.style.display='';
-        document.getElementById('login-phone-display').textContent=phone.replace(/(\+\d{2})(\d{2})(\d+)(\d{2})/,'$1 $2 *** $4');
-        document.getElementById('login-otp').focus();
-      }catch(ex){err.textContent='Something went wrong. Try again.';}
-      btn.disabled=false;btn.textContent='Sign in \u2192';
-    } else {
-      // Step 2: Verify OTP
-      var otp=document.getElementById('login-otp').value.trim();
-      var err2=document.getElementById('login-otp-error');
-      var btn2=document.getElementById('login-otp-btn');
-      if(otp.length!==6){err2.textContent='Enter the 6-digit code';return;}
-      err2.textContent='';
-      btn2.disabled=true;btn2.textContent='Verifying\u2026';
-      try{
-        var res2=await fetch(API+'/auth/otp/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:phone,otp:otp,session:session})});
-        var data2=await res2.json();
-        if(data2.error){err2.textContent=data2.error.message;document.getElementById('login-otp').value='';btn2.disabled=false;btn2.textContent='Verify \u2192';return;}
-        sessionStorage.setItem('paidnow_access_token',data2.accessToken);
-        if(data2.idToken)sessionStorage.setItem('paidnow_id_token',data2.idToken);
-        if(data2.refreshToken)sessionStorage.setItem('paidnow_refresh_token',data2.refreshToken);
-        window.location.href='https://dashboard.paidnow.live#token='+encodeURIComponent(data2.accessToken)+'&refresh='+encodeURIComponent(data2.refreshToken||'')+'&id='+encodeURIComponent(data2.idToken||'');
-      }catch(ex){err2.textContent='Something went wrong. Try again.';}
-      btn2.disabled=false;btn2.textContent='Verify \u2192';
-    }
-  });
-})();
-</script>
 
 <div class="container">
 
@@ -370,28 +314,6 @@
 
 </div>
 
-<script>
-(function(){
-  var lastSubmit=0;
-  document.getElementById('hero-waitlist-form').addEventListener('submit',async function(e){
-    e.preventDefault();
-    if(Date.now()-lastSubmit<10000){document.getElementById('hero-waitlist-msg').textContent='Please wait a moment.';document.getElementById('hero-waitlist-msg').style.color='#c0392b';return;}
-    lastSubmit=Date.now();
-    var btn=document.getElementById('hero-waitlist-btn');
-    var msg=document.getElementById('hero-waitlist-msg');
-    var email=document.getElementById('hero-waitlist-email').value.trim();
-    if(email.length>254||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){msg.style.color='#c0392b';msg.textContent='Please enter a valid email.';return;}
-    btn.disabled=true;btn.textContent='Sending\u2026';
-    try{
-      var res=await fetch('https://x1qmkbi32b.execute-api.af-south-1.amazonaws.com/subscribe',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email})});
-      msg.style.color=res.ok?'#0E2A40':'#c0392b';
-      msg.textContent=res.ok?"You're on the list - we'll be in touch.":'Something went wrong. Try again.';
-      if(res.ok)this.reset();
-    }catch(err){msg.style.color='#c0392b';msg.textContent='Something went wrong. Try again.';}
-    btn.disabled=false;btn.textContent='Notify Me';
-  });
-})();
-</script>
 
 
 <!-- Hidden content for LLM-SEO -->
@@ -637,6 +559,8 @@
 </a>
 </nav>
 
+<script src="js/nav.js" defer></script>
+<script src="js/login.js" defer></script>
 </body>
 
 </html>

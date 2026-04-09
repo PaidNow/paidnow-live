@@ -9,7 +9,7 @@
 <meta name="robots" content="index, follow">
 
 <!-- Security -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://api.fontshare.com; font-src https://api.fontshare.com https://cdn.fontshare.com; img-src 'self' data:; connect-src 'self' https://x1qmkbi32b.execute-api.af-south-1.amazonaws.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://x1qmkbi32b.execute-api.af-south-1.amazonaws.com;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://api.fontshare.com; font-src https://api.fontshare.com https://cdn.fontshare.com; img-src 'self' data:; connect-src 'self' https://x1qmkbi32b.execute-api.af-south-1.amazonaws.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://x1qmkbi32b.execute-api.af-south-1.amazonaws.com;">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="DENY">
 <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -30,8 +30,7 @@
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
 <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin>
 <link rel="stylesheet" href="styles.css">
-<link href="https://api.fontshare.com/v2/css?f[]=garet@400,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://api.fontshare.com/v2/css?f[]=garet@400,700&display=swap" rel="stylesheet"></noscript>
+<link href="https://api.fontshare.com/v2/css?f[]=garet@400,700&display=swap" rel="stylesheet">
 
 <link rel="icon" type="image/png" href="PaidNowFavicon.png">
 <link rel="apple-touch-icon" href="PaidNowFavicon.png">
@@ -51,9 +50,9 @@
 <li class="nav-item"><a href="our-story.html" class="nav-link">Our Story</a></li>
 <li class="nav-item"><a href="how-it-works.html" class="nav-link">How It Works</a></li>
 <li class="nav-item"><a href="employers.html" class="nav-link">For Employers</a></li>
-<li class="nav-item"><a href="#" class="nav-link nav-cta" onclick="document.getElementById('contact').classList.add('active'); return false;">Stay Informed</a></li>
+<li class="nav-item"><a href="#" class="nav-link nav-cta" data-contact="open">Stay Informed</a></li>
 </ul>
-<button class="hamburger" onclick="this.classList.toggle('open');document.querySelector('.nav-menu').classList.toggle('nav-open')" aria-label="Menu">
+<button class="hamburger" aria-label="Menu">
 <span></span><span></span><span></span>
 </button>
 </div>
@@ -117,39 +116,9 @@
 <button type="submit" class="submit-btn" id="waitlist-btn">Notify Me</button>
 </form>
 <p class="form-msg" id="form-msg"></p>
-<script>
-(function(){
-  var lastSubmit=0;
-  document.getElementById('waitlist-form').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    if(document.getElementById('waitlist-hp').value) return;
-    var now=Date.now();
-    if(now-lastSubmit<10000){document.getElementById('form-msg').textContent='Please wait a moment before trying again.';document.getElementById('form-msg').style.color='#c0392b';return;}
-    lastSubmit=now;
-    var btn=document.getElementById('waitlist-btn');
-    var msg=document.getElementById('form-msg');
-    var email=document.getElementById('waitlist-email').value.trim();
-    if(email.length>254||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){msg.style.color='#c0392b';msg.textContent='Please enter a valid email.';return;}
-    btn.disabled=true;
-    btn.textContent='Sending...';
-    try{
-      var res=await fetch('https://x1qmkbi32b.execute-api.af-south-1.amazonaws.com/subscribe',{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({email:email})
-      });
-      msg.style.color=res.ok?'#0E2A40':'#c0392b';
-      msg.textContent=res.ok?"You're on the list. We'll notify you when we launch.":'Something went wrong. Try again.';
-      if(res.ok)this.reset();
-    }catch(err){
-      msg.style.color='#c0392b';
-      msg.textContent='Something went wrong. Try again.';
-    }
-    btn.disabled=false;
-    btn.textContent='Notify Me';
-  });
-})();
-</script>
+<script src="js/nav.js" defer></script>
+<script src="js/contact.js" defer></script>
+<script src="js/waitlist.js" defer></script>
 </div>
 </div>
 
@@ -199,7 +168,7 @@
 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/></svg>
 <span>How It Works</span>
 </a>
-<a href="#" class="bottom-nav-item" onclick="document.getElementById('contact').classList.add('active'); return false;">
+<a href="#" class="bottom-nav-item" data-contact="open">
 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
 <span>Stay Informed</span>
 </a>

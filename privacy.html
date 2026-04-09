@@ -8,7 +8,7 @@
 <meta name="robots" content="index, follow">
 
 <!-- Security -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://api.fontshare.com; font-src https://api.fontshare.com https://cdn.fontshare.com; img-src 'self' data:; connect-src 'self' https://x1qmkbi32b.execute-api.af-south-1.amazonaws.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self' https://x1qmkbi32b.execute-api.af-south-1.amazonaws.com;">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://api.fontshare.com; font-src https://api.fontshare.com https://cdn.fontshare.com; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="X-Frame-Options" content="DENY">
 <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -24,8 +24,7 @@
 <title>Privacy Policy | PaidNow</title>
 
 <link rel="stylesheet" href="styles.css">
-<link href="https://api.fontshare.com/v2/css?f[]=garet@400,700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
-<noscript><link href="https://api.fontshare.com/v2/css?f[]=garet@400,700&display=swap" rel="stylesheet"></noscript>
+<link href="https://api.fontshare.com/v2/css?f[]=garet@400,700&display=swap" rel="stylesheet">
 
 <link rel="icon" type="image/png" href="PaidNowFavicon.png">
 <link rel="apple-touch-icon" href="PaidNowFavicon.png">
@@ -42,9 +41,9 @@
 <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
 <li class="nav-item"><a href="our-story.html" class="nav-link">Our Story</a></li>
 <li class="nav-item"><a href="how-it-works.html" class="nav-link">How It Works</a></li>
-<li class="nav-item"><a href="#" class="nav-link nav-cta" onclick="document.getElementById('contact').classList.add('active'); return false;">Stay Informed</a></li>
+<li class="nav-item"><a href="our-story.html" class="nav-link nav-cta">Stay Informed</a></li>
 </ul>
-<button class="hamburger" onclick="this.classList.toggle('open');document.querySelector('.nav-menu').classList.toggle('nav-open')" aria-label="Menu">
+<button class="hamburger" aria-label="Menu">
 <span></span><span></span><span></span>
 </button>
 </div>
@@ -215,5 +214,6 @@
 </a>
 </nav>
 
+<script src="js/nav.js" defer></script>
 </body>
 </html>
