@@ -223,6 +223,7 @@ h1{
     text-align:center;
     transition:background .18s,color .18s,border-color .18s;
     margin-top:auto;
+    margin-bottom:26px;
 }
 .audience-employer-btn:hover{
     background:#0E2A40;
