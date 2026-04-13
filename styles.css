@@ -1050,3 +1050,4 @@ details[open] .faq-question::after{
 .faq-answer p{margin:0 0 10px;}
 .faq-answer p:last-child{margin-bottom:0;}
 .faq-answer .benefits-list{margin-top:10px;}
+.faq-answer .faq-list{list-style:disc;padding-left:20px;margin:8px 0 0;}
