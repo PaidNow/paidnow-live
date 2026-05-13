@@ -3,6 +3,12 @@ document.addEventListener('DOMContentLoaded', function () {
   var session = null;
   var phone = '', email = '';
 
+  // Prefill phone + email from last successful login
+  var savedPhone = localStorage.getItem('paidnow_phone');
+  var savedEmail = localStorage.getItem('paidnow_email');
+  if (savedPhone) { var ph = document.getElementById('login-phone'); if (ph) ph.value = savedPhone; }
+  if (savedEmail) { var em = document.getElementById('login-email'); if (em) em.value = savedEmail; }
+
   // Toggle login panel
   document.querySelectorAll('[data-login="toggle"]').forEach(function (el) {
     el.addEventListener('click', function (e) {
@@ -84,6 +90,8 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
           }
           session = data.session || null;
+          localStorage.setItem('paidnow_phone', phone);
+          localStorage.setItem('paidnow_email', email);
           document.getElementById('login-step-phone').style.display = 'none';
           otpStep.style.display = '';
           document.getElementById('login-phone-display').textContent =
