@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
   var API = 'https://82pvumiwgj.execute-api.af-south-1.amazonaws.com/v1';
+  var DASHBOARD = 'https://dashboard.paidnow.live';
   var session = null;
   var phone = '', email = '';
 
@@ -8,6 +9,45 @@ document.addEventListener('DOMContentLoaded', function () {
   var savedEmail = localStorage.getItem('paidnow_email');
   if (savedPhone) { var ph = document.getElementById('login-phone'); if (ph) ph.value = savedPhone; }
   if (savedEmail) { var em = document.getElementById('login-email'); if (em) em.value = savedEmail; }
+
+  // Relay auth tokens to an already-opened dashboard window via postMessage.
+  // The dashboard must respond with { type: 'paidnow_ready' } once its listener is active,
+  // then receive { type: 'paidnow_auth', accessToken, refreshToken, idToken } in response.
+  function sendAuthToDashboard(dashWin, tokens) {
+    var timer = null;
+    function relay(e) {
+      if (e.origin !== DASHBOARD) return;
+      if (!e.data || e.data.type !== 'paidnow_ready') return;
+      clearTimeout(timer);
+      window.removeEventListener('message', relay);
+      dashWin.postMessage({
+        type: 'paidnow_auth',
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken || '',
+        idToken: tokens.idToken || ''
+      }, DASHBOARD);
+    }
+    window.addEventListener('message', relay);
+    // Clean up listener if the dashboard never signals ready within 30 s
+    timer = setTimeout(function () { window.removeEventListener('message', relay); }, 30000);
+  }
+
+  // Open the dashboard and relay tokens. If window.open is blocked by the browser,
+  // render a manual link into errEl so the user can proceed.
+  function openDashboard(tokens, errEl) {
+    var dashWin = window.open(DASHBOARD, '_blank');
+    if (dashWin) {
+      sendAuthToDashboard(dashWin, tokens);
+    } else {
+      var link = document.createElement('a');
+      link.href = DASHBOARD;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      link.textContent = 'Open your dashboard →';
+      errEl.textContent = '';
+      errEl.appendChild(link);
+    }
+  }
 
   // Toggle login panel
   document.querySelectorAll('[data-login="toggle"]').forEach(function (el) {
@@ -70,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var btn = document.getElementById('login-btn');
         if (!phone || !email) { err.textContent = 'Phone and email are required'; return; }
         err.textContent = '';
-        btn.disabled = true; btn.textContent = 'Sending\u2026';
+        btn.disabled = true; btn.textContent = 'Sending…';
         try {
           var res = await fetch(API + '/auth/otp/initiate', {
             method: 'POST',
@@ -79,14 +119,12 @@ document.addEventListener('DOMContentLoaded', function () {
           });
           var data = await res.json();
           if (data.authenticated) {
-            window.location.href = 'https://dashboard.paidnow.live#token='
-              + encodeURIComponent(data.accessToken)
-              + '&refresh=' + encodeURIComponent(data.refreshToken || '');
+            openDashboard({ accessToken: data.accessToken, refreshToken: data.refreshToken }, err);
             return;
           }
           if (data.error) {
             err.textContent = data.error.message;
-            btn.disabled = false; btn.textContent = 'Sign in \u2192';
+            btn.disabled = false; btn.textContent = 'Sign in →';
             return;
           }
           session = data.session || null;
@@ -98,15 +136,18 @@ document.addEventListener('DOMContentLoaded', function () {
             phone.replace(/(\+\d{2})(\d{2})(\d+)(\d{2})/, '$1 $2 *** $4');
           document.getElementById('login-otp').focus();
         } catch (ex) { err.textContent = 'Something went wrong. Try again.'; }
-        btn.disabled = false; btn.textContent = 'Sign in \u2192';
+        btn.disabled = false; btn.textContent = 'Sign in →';
       } else {
-        // Step 2: verify OTP
+        // Step 2: verify OTP.
+        // Open the dashboard window here, before the await, to retain the user-gesture
+        // popup allowance. If verification fails we close it immediately.
         var otp = document.getElementById('login-otp').value.trim();
         var err2 = document.getElementById('login-otp-error');
         var btn2 = document.getElementById('login-otp-btn');
         if (otp.length !== 6) { err2.textContent = 'Enter the 6-digit code'; return; }
         err2.textContent = '';
-        btn2.disabled = true; btn2.textContent = 'Verifying\u2026';
+        btn2.disabled = true; btn2.textContent = 'Verifying…';
+        var dashWin = window.open(DASHBOARD, '_blank');
         try {
           var res2 = await fetch(API + '/auth/otp/verify', {
             method: 'POST',
@@ -115,18 +156,33 @@ document.addEventListener('DOMContentLoaded', function () {
           });
           var data2 = await res2.json();
           if (data2.error) {
+            if (dashWin) dashWin.close();
             err2.textContent = data2.error.message;
             document.getElementById('login-otp').value = '';
-            btn2.disabled = false; btn2.textContent = 'Verify \u2192';
+            btn2.disabled = false; btn2.textContent = 'Verify →';
             return;
           }
-          // Pass tokens via URL hash (cleared immediately by dashboard on arrival)
-          window.location.href = 'https://dashboard.paidnow.live#token='
-            + encodeURIComponent(data2.accessToken)
-            + '&refresh=' + encodeURIComponent(data2.refreshToken || '')
-            + '&id=' + encodeURIComponent(data2.idToken || '');
-        } catch (ex) { err2.textContent = 'Something went wrong. Try again.'; }
-        btn2.disabled = false; btn2.textContent = 'Verify \u2192';
+          if (dashWin) {
+            sendAuthToDashboard(dashWin, {
+              accessToken: data2.accessToken,
+              refreshToken: data2.refreshToken,
+              idToken: data2.idToken
+            });
+          } else {
+            // Popup was blocked — render a manual link
+            var link = document.createElement('a');
+            link.href = DASHBOARD;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.textContent = 'Open your dashboard →';
+            err2.textContent = '';
+            err2.appendChild(link);
+          }
+        } catch (ex) {
+          if (dashWin) dashWin.close();
+          err2.textContent = 'Something went wrong. Try again.';
+        }
+        btn2.disabled = false; btn2.textContent = 'Verify →';
       }
     });
   }
@@ -150,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (emailVal.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
         msg.style.color = '#c0392b'; msg.textContent = 'Please enter a valid email.'; return;
       }
-      btn.disabled = true; btn.textContent = 'Sending\u2026';
+      btn.disabled = true; btn.textContent = 'Sending…';
       try {
         var res = await fetch('https://x1qmkbi32b.execute-api.af-south-1.amazonaws.com/subscribe', {
           method: 'POST',
