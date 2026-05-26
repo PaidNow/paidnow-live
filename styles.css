@@ -110,10 +110,6 @@ h1{
     font-size:clamp(11px,2.5vw,13px);
     font-weight:600;
     color:#0E2A40;
-    background:rgba(14,42,64,.06);
-    border:1px solid rgba(14,42,64,.14);
-    border-radius:999px;
-    padding:6px 14px;
     letter-spacing:.3px;
     margin-bottom:20px;
 }
